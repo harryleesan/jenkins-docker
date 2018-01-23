@@ -4,20 +4,14 @@ MAINTAINER Harry Lee
 USER root
 
 # Install the latest Docker CE binaries
-RUN apt-get update && \
-    apt-get -y install apt-transport-https \
+RUN apt-get update && apt-get -y install \
+      apt-transport-https \
       ca-certificates \
       curl \
       gnupg2 \
-      software-properties-common && \
-    curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey && \
-    add-apt-repository \
-      "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
-      $(lsb_release -cs) \
-      stable"
+      software-properties-common
 
-RUN apt-get update && \
-    apt-get -y install docker-ce
+RUN curl -sSL https://get.docker.com/ | sh
 
 RUN usermod -a -G docker jenkins
 
@@ -39,5 +33,11 @@ USER jenkins
 
 RUN mkdir ~/.aws
 VOLUME ["~/.aws"]
+
+RUN /usr/local/bin/install-plugins.sh \
+    workflow-aggregator:2.5 \
+    git-client:2.7.0 \
+    pipeline-multibranch-defaults:1.1 \
+    docker-workflow:1.13
 
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
