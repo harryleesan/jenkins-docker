@@ -8,6 +8,18 @@
 
 ## Usage
 
+### TL;DR
+
+```bash
+docker build -t halosan/jenkins:latest .
+docker run -d -p 8080:8080 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v jenkins_home:/var/jenkins_home \
+  --name jenkins \
+  halosan/jenkins:latest
+```
+
+### Docker
 To use `docker-in-docker`, we are utilizing the `docker-sidecar` method by
 mounting the host docker socket into the Jenkins container.
 
@@ -19,6 +31,7 @@ docker run \
   halosan/jenkins:latest
 ```
 
+### Persist
 To persist Jenkins data and configurations read the [Official Doc](https://github.com/jenkinsci/docker/blob/master/README.md).
 The official doc recommends using a _volume container_ to persist data. A host
 directory can also be used, but that requires some permission tweaking to the
