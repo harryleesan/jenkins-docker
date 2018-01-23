@@ -44,3 +44,6 @@ usermod -aG root jenkins
 
 This is a huge security risk, but hopefully you won't be running Jenkins on
 MacOS as a build server. This issue does not affect Linux systems.
+
+The above command will have to be run each time you run the container and mount
+the docker socket into the container.
