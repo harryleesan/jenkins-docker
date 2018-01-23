@@ -36,8 +36,11 @@ VOLUME ["~/.aws"]
 
 RUN /usr/local/bin/install-plugins.sh \
     workflow-aggregator:2.5 \
+    workflow-scm-step:2.6 \
     git-client:2.7.0 \
     pipeline-multibranch-defaults:1.1 \
-    docker-workflow:1.13
+    docker-workflow:1.14 \
+    bitbucket:1.1.8 \
+    docker-slaves:1.0.7
 
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
