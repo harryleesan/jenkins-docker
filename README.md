@@ -44,6 +44,13 @@ docker run -p 8080:8080 \
   halosan/jenkins:latest
 ```
 
+This creates a _data volume_ that will be the persistence storage for the Jenkins server.
+To remove the volume:
+
+```bash
+docker volume rm jenkins_home
+```
+
 ## Gotchas
 
 If you are running docker on **MacOS**, the _jenkins_ user in the container will
