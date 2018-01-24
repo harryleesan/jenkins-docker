@@ -59,8 +59,7 @@ not have permission to access docker on the host. A work around for this
 (security risk) is to add _jenkins_ user to the _root_ group.
 
 ```bash
-docker exec -it --user root jenkins bash
-usermod -aG root jenkins
+docker exec -t --user root jenkins sh -c "usermod -aG root jenkins"
 ```
 
 This is a huge security risk, but hopefully you won't be running Jenkins on
