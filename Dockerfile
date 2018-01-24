@@ -42,6 +42,7 @@ RUN /usr/local/bin/install-plugins.sh \
     pipeline-multibranch-defaults:1.1 \
     docker-workflow:1.14 \
     bitbucket:1.1.8 \
-    docker-slaves:1.0.7
+    docker-slaves:1.0.7 \
+    envinject:2.1.5
 
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
