@@ -43,6 +43,7 @@ RUN /usr/local/bin/install-plugins.sh \
     docker-workflow:1.14 \
     bitbucket:1.1.8 \
     docker-slaves:1.0.7 \
-    envinject:2.1.5
+    envinject:2.1.5 \
+    credentials-binding:1.14
 
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
