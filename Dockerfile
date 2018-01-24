@@ -34,6 +34,7 @@ USER jenkins
 RUN mkdir ~/.aws
 VOLUME ["~/.aws"]
 
+# Install extra plugins for Jenkins (you can remove/add these)
 RUN /usr/local/bin/install-plugins.sh \
     workflow-aggregator:2.5 \
     workflow-scm-step:2.6 \
