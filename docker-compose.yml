@@ -1,0 +1,16 @@
+version: '3'
+services:
+  jenkins:
+    build: ./
+    image: halosan/jenkins:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins-home:/var/jenkins_home
+    ports:
+      - "8080:8080"
+    restart: always
+    container_name: jenkins
+
+volumes:
+  jenkins-home:
+    external: true

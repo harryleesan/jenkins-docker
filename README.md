@@ -10,14 +10,27 @@
 
 ### TL;DR
 
+**Using** `docker-compose`:
+```bash
+docker-compose up -d --build
+```
+
+**Not using** `docker-compose`:
 ```bash
 docker build -t halosan/jenkins:latest .
+docker volume create jenkins_home
 docker run -d -p 8080:8080 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v jenkins_home:/var/jenkins_home \
   --name jenkins \
   --restart always \
   halosan/jenkins:latest
+```
+
+After the container has started, the initial **admin** password can be obtained
+by:
+```bash
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
 ### Docker
