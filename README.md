@@ -13,6 +13,7 @@
 
 **Using** `docker-compose`:
 ```bash
+docker volume create jenkins_home
 docker-compose up -d --build
 ```
 
