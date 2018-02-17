@@ -6,6 +6,7 @@
 - `docker-compose`
 - `aws-cli`
 
+
 ## Usage
 
 ### TL;DR
@@ -22,6 +23,7 @@ docker volume create jenkins_home
 docker run -d -p 8080:8080 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v jenkins_home:/var/jenkins_home \
+  -v $(pwd)/aws:/var/jenkins_home/.aws:ro \
   --name jenkins \
   --restart always \
   halosan/jenkins:latest
@@ -33,8 +35,10 @@ by:
 docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
+
 ### Docker
-To use `docker-in-docker`, we are utilizing the `docker-sidecar` method by
+To run `docker` inside of our Jenkins container (_docker-in-docker_), we are
+utilizing the _docker-sidecar_ method by
 mounting the host docker socket into the Jenkins container.
 
 ```bash
@@ -45,8 +49,10 @@ docker run \
   halosan/jenkins:latest
 ```
 
+
 ### Persist
-To persist Jenkins data and configurations read the [Official Doc](https://github.com/jenkinsci/docker/blob/master/README.md).
+To persist Jenkins data and configurations, read the
+[Official Doc](https://github.com/jenkinsci/docker/blob/master/README.md).
 The official doc recommends using a _volume container_ to persist data. A host
 directory can also be used, but that requires some permission tweaking to the
 host directory.
@@ -65,6 +71,15 @@ To remove the volume:
 docker volume rm jenkins_home
 ```
 
+
+### AWS Credentials
+To allow **AWS CLI** in the container access to your AWS resources, in the `aws`
+folder enter your aws credentials in the `config` and `credentails` files.
+
+Alternatively, you can mount your own `~/.aws` folder into
+`/var/jenkins_home/.aws`.
+
+
 ### Workspace issue workaround
 This issue only applies if you are building a pipeline using the `docker`
 plugin.
@@ -72,15 +87,15 @@ Executing `sh` in the docker container through _docker.inside_ in the
 Jenkinsfile through the
 mounted docker socket actually means that you are using the workspace on the
 host. This means that the directory needs to exist in the host, or else you will
-get  `/jenkins-log.txt: Directory nonexistent` error.
+get  '`/jenkins-log.txt: Directory nonexistent`' error.
 
 #### [Resolution](https://github.com/jenkinsci/docker/issues/626)
-1. Create a directory on the host that is used as the workspace. e.g.
-   _/var/jenkins_workspaces_ and chmod 777 the directory.
+1. Create a directory on the host that will be used as the workspace. e.g.
+   _/var/jenkins_workspaces_ and `chmod -R 777` the directory.
 2. Mount this directory as a **bind volume** to the Jenkins container at the
-   **exact same directory**.
+   **exact same directory in the container**.
 3. This will be the workspace that is used in your **Jenkinsfile**.
-    - To Wrap your commands in the custom workspace:
+    - Wrap your commands in the custom workspace:
     ```groovy
       ws("/var/jenkins_workspaces/helloworld"){
       YOUR STAGES
