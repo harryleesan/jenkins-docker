@@ -3,9 +3,15 @@ services:
   jenkins:
     build: ./
     image: halosan/jenkins:latest
+    environment:
+      DOCKER_SOCKET: /var/run/docker.sock
+      DOCKER_GROUP: root
+      JENKINS_USER: jenkins
+      JENKINS_WORKSPACE: /var/jenkins_workspace
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - jenkins-home:/var/jenkins_home
+      - /usr/local/share/jenkins_workspace:/usr/local/share/jenkins_workspace
     ports:
       - "8080:8080"
     restart: always

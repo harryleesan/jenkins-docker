@@ -9,11 +9,12 @@ RUN apt-get update && apt-get -y install \
       ca-certificates \
       curl \
       gnupg2 \
-      software-properties-common
+      software-properties-common \
+      sudo
 
 RUN curl -sSL https://get.docker.com/ | sh
 
-RUN usermod -a -G docker jenkins
+# RUN usermod -a -G docker jenkins
 
 # Install latest docker-compose binary
 RUN curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && \
@@ -29,10 +30,8 @@ RUN apt-get install -y \
       pip \
       awscli
 
-USER jenkins
-
-RUN mkdir ~/.aws
-VOLUME ["~/.aws"]
+RUN mkdir /var/jenkins_home/.aws
+VOLUME ["/var/jenins_home/.aws"]
 
 # Install extra plugins for Jenkins (you can remove/add these)
 RUN /usr/local/bin/install-plugins.sh \
@@ -44,6 +43,9 @@ RUN /usr/local/bin/install-plugins.sh \
     bitbucket:1.1.8 \
     docker-slaves:1.0.7 \
     envinject:2.1.5 \
-    credentials-binding:1.14
+    credentials-binding:1.14 \
+    cloudbees-bitbucket-branch-source:2.2.9
 
-ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
+COPY entrypoint.sh /
+RUN chmod 755 /entrypoint.sh
+ENTRYPOINT ["/bin/bash", "-c", "/entrypoint.sh"]

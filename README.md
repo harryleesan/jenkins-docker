@@ -65,6 +65,32 @@ To remove the volume:
 docker volume rm jenkins_home
 ```
 
+### Workspace issue workaround
+This issue only applies if you are building a pipeline using the `docker`
+plugin.
+Executing `sh` in the docker container through _docker.inside_ in the
+Jenkinsfile through the
+mounted docker socket actually means that you are using the workspace on the
+host. This means that the directory needs to exist in the host, or else you will
+get  `/jenkins-log.txt: Directory nonexistent` error.
+
+#### [Resolution](https://github.com/jenkinsci/docker/issues/626)
+1. Create a directory on the host that is used as the workspace. e.g.
+   _/var/jenkins_workspaces_ and chmod 777 the directory.
+2. Mount this directory as a **bind volume** to the Jenkins container at the
+   **exact same directory**.
+3. This will be the workspace that is used in your **Jenkinsfile**.
+    - To Wrap your commands in the custom workspace:
+    ```groovy
+      ws("/var/jenkins_workspaces/helloworld"){
+      YOUR STAGES
+
+      docker.image("x").inside("-u 0:0") {
+      }
+    }
+    ```
+
+
 ## Gotchas
 
 If you are running docker on **MacOS**, the _jenkins_ user in the container will
@@ -74,6 +100,9 @@ not have permission to access docker on the host. A work around for this
 ```bash
 docker exec -t --user root jenkins sh -c "usermod -aG root jenkins"
 ```
+
+For `docker-compose`, you just have to change `DOCKER_GROUP: docker` to
+`DOCKER_GROUP: root`.
 
 This is a huge security risk, but hopefully you won't be running Jenkins on
 MacOS as a build server. This issue does not affect Linux systems.
