@@ -84,11 +84,10 @@ Alternatively, you can mount your own `~/.aws` folder into
 ### Workspace issue workaround
 This issue only applies if you are building a pipeline using the `docker`
 plugin.
-Executing `sh` in the docker container through _docker.inside_ in the
-Jenkinsfile through the
-mounted docker socket actually means that you are using the workspace on the
-host. This means that the directory needs to exist in the host, or else you will
-get  '`/jenkins-log.txt: Directory nonexistent`' error.
+Executing `sh` in the Jenkins container through _docker.inside_ using the mounted
+docker socket means that you are using the workspace on the host. This means
+that the directory needs to exist on the host, or you will get
+'`/jenkins-log.txt: Directory nonexistent`' error.
 
 #### [Resolution](https://github.com/jenkinsci/docker/issues/626)
 1. Create a directory on the host that will be used as the workspace. e.g.
@@ -123,5 +122,5 @@ For `docker-compose`, you just have to change `DOCKER_GROUP: docker` to
 This is a huge security risk, but hopefully you won't be running Jenkins on
 MacOS as a build server. This issue does not affect Linux systems.
 
-The above command will have to be run each time you run the container and mount
-the docker socket into the container.
+The above command will have to be run each time you run the container
+and mount the docker socket into the container (does not apply when using docker-compose).
