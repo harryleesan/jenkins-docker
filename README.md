@@ -81,7 +81,7 @@ Alternatively, you can mount your own `~/.aws` folder into
 `/var/jenkins_home/.aws`.
 
 
-### Workspace issue workaround
+### (DEPRECATED) Workspace issue workaround
 This issue only applies if you are building a pipeline using the `docker`
 plugin.
 Executing `sh` in the Jenkins container through _docker.inside_ using the mounted

@@ -39,7 +39,7 @@ RUN /usr/local/bin/install-plugins.sh \
     workflow-scm-step:2.6 \
     git-client:2.7.0 \
     pipeline-multibranch-defaults:1.1 \
-    docker-workflow:1.14 \
+    docker-workflow:1.15.1 \
     bitbucket:1.1.8 \
     docker-slaves:1.0.7 \
     envinject:2.1.5 \
