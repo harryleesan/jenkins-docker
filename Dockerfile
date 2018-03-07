@@ -37,14 +37,27 @@ VOLUME ["/var/jenins_home/.aws"]
 RUN /usr/local/bin/install-plugins.sh \
     workflow-aggregator:2.5 \
     workflow-scm-step:2.6 \
-    git-client:2.7.0 \
+    git-client:2.7.1 \
     pipeline-multibranch-defaults:1.1 \
     docker-workflow:1.15.1 \
     bitbucket:1.1.8 \
     docker-slaves:1.0.7 \
-    envinject:2.1.5 \
-    credentials-binding:1.14 \
-    cloudbees-bitbucket-branch-source:2.2.9
+    credentials-binding:1.15 \
+    cloudbees-bitbucket-branch-source:2.2.10 \
+    amazon-ecr:1.6 \
+    antisamy-markup-formatter:1.5 \
+    aws-credentials:1.23 \
+    gatling:1.2.2 \
+    matrix-auth:2.2 \
+    mission-control-view:0.9.13 \
+    pipeline-utility-steps:2.0.1 \
+    resource-disposer:0.8 \
+    slack:2.3 \
+    ssh-credentials:1.13 \
+    swarm:3.10 \
+    windows-slaves:1.3.1 \
+    ws-cleanup:0.34 \
+    blueocean:1.4.2
 
 COPY entrypoint.sh /
 RUN chmod 755 /entrypoint.sh
