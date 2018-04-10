@@ -1,10 +1,11 @@
-# Jenkins in Docker
+# Jenkins in Docker (with `aws-cli` and `kubectl`)
 ### Author: Harry Lee
 
-## What's inside?
+## What's installed?
 - `docker`
 - `docker-compose`
 - `aws-cli`
+- `kubectl`
 
 
 ## Usage
@@ -25,6 +26,7 @@ docker run -d -p 8080:8080 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v jenkins_home:/var/jenkins_home \
   -v $(pwd)/aws:/var/jenkins_home/.aws:ro \
+  -v $(pwd)/kube:/var/jenkins_home/.kube:ro \
   --name jenkins \
   --restart always \
   halosan/jenkins:latest
@@ -74,12 +76,18 @@ docker volume rm jenkins_home
 
 
 ### AWS Credentials
-To allow **AWS CLI** in the container access to your AWS resources, in the `aws`
+To allow **aws** in the container access to your **AWS resources**, in the `aws`
 folder enter your aws credentials in the `config` and `credentails` files.
 
 Alternatively, you can mount your own `~/.aws` folder into
 `/var/jenkins_home/.aws`.
 
+### Kubernetes Credentials
+To allow **kubectl** in the container access to your **Kubernetes resources**, in
+the `kube` folder enter your credentials in the `config` file.
+
+Alternatively, you can mount your own `~/.kube` folder into
+`/var/jenkins_home/.kube`.
 
 ### (DEPRECATED) Workspace issue workaround
 This issue only applies if you are building a pipeline using the `docker`

@@ -13,6 +13,7 @@ services:
       - jenkins-home:/var/jenkins_home
       - /usr/local/share/jenkins_workspace:/usr/local/share/jenkins_workspace
       - ./aws:/var/jenkins_home/.aws:ro
+      - ./kube:/var/jenkins_home/.kube:ro
     ports:
       - "8080:8080"
     restart: always

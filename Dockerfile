@@ -33,6 +33,14 @@ RUN apt-get install -y \
 RUN mkdir /var/jenkins_home/.aws
 VOLUME ["/var/jenins_home/.aws"]
 
+# Install kubectl
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+RUN chmod +x ./kubectl
+RUN mv ./kubectl /usr/local/bin/kubectl
+
+RUN mkdir /var/jenkins_home/.kube
+VOLUME ["/var/jenkins_home/.kube"]
+
 # Install extra plugins for Jenkins (you can remove/add these)
 RUN /usr/local/bin/install-plugins.sh \
     workflow-aggregator:2.5 \
