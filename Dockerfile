@@ -10,6 +10,7 @@ RUN apt-get update && apt-get -y install \
       curl \
       gnupg2 \
       software-properties-common \
+      rsync \
       sudo
 
 RUN curl -sSL https://get.docker.com/ | sh
