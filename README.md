@@ -132,3 +132,46 @@ MacOS as a build server. This issue does not affect Linux systems.
 
 The above command will have to be run each time you run the container
 and mount the docker socket into the container (does not apply when using docker-compose).
+
+## Backup Jenkins Configurations to AWS S3
+
+Here is a script that can be incorporated into a scheduled job. Ensure that your
+AWS user has the policy to `PutObject` into the specified S3 bucket.
+
+```bash
+# Courtesy of https://thepracticalsysadmin.com/backing-up-jenkins-configurations-to-s3/
+
+# Delete all files in the workspace
+rm -rf *
+
+# Create a directory for the job definitions
+mkdir -p build/jobs
+
+# Copy global configuration files into the workspace
+cp $JENKINS_HOME/*.xml build/
+
+# Copy keys and secrets into the workspace
+cp $JENKINS_HOME/identity.key.enc build/
+cp $JENKINS_HOME/secret.key build/
+cp $JENKINS_HOME/secret.key.not-so-secret build/
+cp -r $JENKINS_HOME/secrets build/
+
+# Copy user configuration files into the workspace
+cp -r $JENKINS_HOME/users build/
+
+# Copy custom Pipeline workflow libraries
+# cp -r $JENKINS_HOME/workflow-libs $BUILD_ID
+
+# Copy job definitions into the workspace
+rsync -am --include='config.xml' --include='*/' --prune-empty-dirs --exclude='*' $JENKINS_HOME/jobs/ build/jobs/
+
+# Create an archive from all copied files (since the S3 plugin cannot copy folders recursively)
+tar czf jenkins-configuration.tar.gz -C build .
+
+# Remove the directory so only the tar.gz gets copied to S3
+rm -rf build
+
+aws s3 cp jenkins-configuration.tar.gz s3://halosan/jenkins/backups/
+
+rm -rf jenkins-configuration.tar.gz
+```
