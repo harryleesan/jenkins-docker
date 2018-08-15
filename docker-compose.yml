@@ -13,7 +13,7 @@ services:
       - jenkins-home:/var/jenkins_home
       - /usr/local/share/jenkins_workspace:/usr/local/share/jenkins_workspace
       - ./aws:/var/jenkins_home/.aws:ro
-      - ./kube:/var/jenkins_home/.kube:ro
+      - ./kube:/var/jenkins_home/.kube
     ports:
       - "8080:8080"
     restart: always
@@ -22,3 +22,9 @@ services:
 volumes:
   jenkins-home:
     external: true
+
+# networks:
+#   default:
+#     ipam:
+#       config:
+#         - subnet: 172.20.0.0/16
