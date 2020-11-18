@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:lts-jdk11
 MAINTAINER Harry Lee
 
 USER root
@@ -18,7 +18,8 @@ RUN curl -sSL https://get.docker.com/ | sh
 # RUN usermod -a -G docker jenkins
 
 # Install latest docker-compose binary
-RUN curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && \
+ENV DOCKER_COMPOSE_VERSION 1.27.4
+RUN curl -L https://github.com/docker/compose/releases/download/"${DOCKER_COMPOSE_VERSION}"/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose
 
 # Install aws-cli
@@ -44,29 +45,25 @@ VOLUME ["/var/jenkins_home/.kube"]
 
 # Install extra plugins for Jenkins (you can remove/add these)
 RUN /usr/local/bin/install-plugins.sh \
-    workflow-aggregator:2.5 \
-    workflow-scm-step:2.6 \
-    git-client:2.7.1 \
-    pipeline-multibranch-defaults:1.1 \
-    docker-workflow:1.15.1 \
-    bitbucket:1.1.8 \
+    workflow-multibranch:2.22 \
+    git-client:3.5.1 \
+    docker-workflow:1.25 \
+    bitbucket:1.1.25 \
     docker-slaves:1.0.7 \
-    credentials-binding:1.15 \
-    cloudbees-bitbucket-branch-source:2.2.10 \
+    docker-plugin:1.2.1 \
+    credentials-binding:1.24 \
+    cloudbees-bitbucket-branch-source:2.9.4 \
     amazon-ecr:1.6 \
-    antisamy-markup-formatter:1.5 \
-    aws-credentials:1.23 \
-    gatling:1.2.2 \
-    matrix-auth:2.2 \
-    mission-control-view:0.9.13 \
-    pipeline-utility-steps:2.0.1 \
-    resource-disposer:0.8 \
-    slack:2.3 \
-    ssh-credentials:1.13 \
-    swarm:3.10 \
-    windows-slaves:1.3.1 \
-    ws-cleanup:0.34 \
-    blueocean:1.4.2
+    antisamy-markup-formatter:2.1 \
+    aws-credentials:1.28 \
+    matrix-auth:2.6.4 \
+    mission-control-view:0.9.16 \
+    pipeline-utility-steps:2.6.1 \
+    resource-disposer:0.14 \
+    ssh-credentials:1.18.1 \
+    swarm:3.24 \
+    ws-cleanup:0.38 \
+    blueocean:1.24.3
 
 COPY entrypoint.sh /
 RUN chmod 755 /entrypoint.sh

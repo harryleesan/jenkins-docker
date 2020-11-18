@@ -11,4 +11,6 @@ if [ -S ${JENKINS_WORKSPACE} ]; then
     usermod -aG ${JENKINS_WORKSPACE_GID} ${JENKINS_USER}
 fi
 
-exec sudo -E -H -u jenkins bash -c /usr/local/bin/jenkins.sh
+/sbin/tini -- /usr/local/bin/jenkins.sh
+
+# exec sudo -E -H -u jenkins bash -c /usr/local/bin/jenkins.sh

@@ -14,7 +14,7 @@
 
 **Using** `docker-compose`:
 ```bash
-docker volume create jenkins_home
+docker volume create jenkins-home
 docker-compose up -d --build
 ```
 
@@ -37,6 +37,11 @@ by:
 ```bash
 docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 ```
+
+### Configure Jenkins to use Docker
+
+This tutorial can be followed to configure Docker:
+https://medium.com/@karthi.net/docker-tutorial-build-docker-images-using-jenkins-d2880e65b74
 
 
 ### Docker
