@@ -21,10 +21,10 @@ docker-compose up -d --build
 **Not using** `docker-compose`:
 ```bash
 docker build -t halosan/jenkins:latest .
-docker volume create jenkins_home
+docker volume create jenkins-home
 docker run -d -p 8080:8080 \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -v jenkins_home:/var/jenkins_home \
+  -v jenkins-home:/var/jenkins_home \
   -v $(pwd)/aws:/var/jenkins_home/.aws:ro \
   -v $(pwd)/kube:/var/jenkins_home/.kube:ro \
   --name jenkins \
@@ -67,7 +67,7 @@ host directory.
 
 ```bash
 docker run -p 8080:8080 \
-  -v jenkins_home:/var/jenkins_home \
+  -v jenkins-home:/var/jenkins_home \
   --name jenkins \
   halosan/jenkins:latest
 ```
@@ -76,7 +76,7 @@ This creates a _data volume_ that will be the persistence storage for the Jenkin
 To remove the volume:
 
 ```bash
-docker volume rm jenkins_home
+docker volume rm jenkins-home
 ```
 
 
